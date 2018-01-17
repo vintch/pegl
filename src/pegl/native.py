@@ -31,13 +31,15 @@ __all__ = ['eglGetDisplay', 'eglInitialize', 'eglTerminate', 'eglQueryString',
            'eglWaitGL', 'eglWaitNative', 'eglSwapBuffers', 'eglCopyBuffers',
            'eglSwapInterval', 'eglGetProcAddress', 'eglReleaseThread',
            # Native types reused in extension modules.
-           'c_ibool', 'c_enum', 'c_attr_list', 'c_display', 'c_surface',
-           'c_client_buffer', 'c_config', 'c_int_p', 'make_int_p']
+           'c_ibool', 'c_enum', 'c_attr_list', 'c_display', 'c_context',
+           'c_surface', 'c_client_buffer', 'c_config', 'c_int_p', 'make_int_p']
 
 # Standard library imports.
 import ctypes
 from ctypes import POINTER, c_char_p, c_int, c_uint, c_void_p
 import sys
+import re
+import os
 
 # Local imports.
 from . import EGLError, error_codes, NO_CONTEXT, NO_SURFACE
@@ -45,7 +47,14 @@ from . import EGLError, error_codes, NO_CONTEXT, NO_SURFACE
 # Native library import.
 libname = 'libEGL'
 if sys.platform.startswith('linux'):
-    libclass, libext = ctypes.CDLL, '.so'
+    libclass = ctypes.CDLL
+    if os.path.exists("/proc/cpuinfo"):
+        with open("/proc/cpuinfo", "rt") as f:
+            cpuinfo = f.read()
+        if re.search("\\s*:\\s*BCM283[567]", cpuinfo) is not None:
+            libclass("libbrcmGLESv2.so")
+            libname = "libbrcmEGL"
+    libext = ".so"
 elif sys.platform == 'darwin':
     libclass, libext = ctypes.CDLL, '.dylib'
 elif sys.platform == 'win32':

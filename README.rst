@@ -135,8 +135,14 @@ instance will usually be the first step when using EGL.
 pegl.ext
 --------
 A large selection of EGL extensions are given wrappers in the ``ext``
-subpackage. All non-draft extensions in the EGL Registry as of March
-2014 [#]_ are supported, except for the following:
+subpackage. Note that, with the exception of ``ext.ext_extensiontypes``
+(``EGL_EXT_client_extensions``), extensions should be loaded using the
+``load_extension()`` method of a ``Display`` object (or the function of
+the same name that ``ext.ext_extensiontypes`` provides) rather than
+being imported directly.
+
+All non-draft extensions in the EGL Registry as of March 2014 [#]_ are
+supported, except for the following:
 
 +-----+----------------------------------+--------------------------------+
 |Ext #|           Name string            |             Reason             |
@@ -160,7 +166,7 @@ subpackage. All non-draft extensions in the EGL Registry as of March
 |46   |``EGL_NV_3dvision_surface``       |                                |
 +-----+----------------------------------+--------------------------------+
 |61   |``EGL_KHR_get_all_proc_addresses``|Would involve an architectural  |
-|     |and ``EGL_KHR_client_get_``etc.   |change to the ``native`` module.|
+|     |and ``EGL_KHR_client_get_`` etc.  |change to the ``native`` module.|
 +-----+----------------------------------+--------------------------------+
 
 In addition, some extensions that are not officially registered, but are

@@ -37,7 +37,8 @@ Version.__str__ = lambda self: '{0.major}.{0.minor} {0.vendor}'.format(self)
 
 def current_display():
     '''Get the current EGL display.'''
-    return Display(dhandle=native.eglGetCurrentDisplay())
+    dhandle = native.eglGetCurrentDisplay()
+    return (None if dhandle == NO_DISPLAY else Display(dhandle))
 
 class Display:
     '''An EGL display.
@@ -214,7 +215,7 @@ class Display:
             raise ImportError("no module found for extension "
                               "'{}'".format(extname))
         else:
-            pkg_with_module = __import__(vendor_pkg, globals(), locals(),
+            pkg_with_module = __import__('ext', globals(), locals(),
                                          [module_name], 1)
             return getattr(pkg_with_module, module_name)
 

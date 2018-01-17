@@ -25,6 +25,8 @@
 # TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+# vintch's port for Raspberry Pi
+
 # Standard library imports.
 import os.path
 import re
@@ -43,10 +45,11 @@ def get_version(package, filename='__init__.py'):
 
 setup(
     name='Pegl',
-    version=get_version('pegl'),
+    version=get_version('src/pegl'),
     author='Tim Pederick',
     author_email='pederick@gmail.com',
     packages=['pegl', 'pegl.attribs', 'pegl.ext'],
+    package_dir={'pegl': 'src/pegl'},
     url='https://github.com/perey/pegl',
     description='Python 3 wrapper for the EGL API',
     classifiers=['Development Status :: 3 - Alpha',
